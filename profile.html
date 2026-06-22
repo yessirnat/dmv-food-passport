@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Passport — DMV Food Passport</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="profile">
+
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">🗺️ DMV Food Passport</a>
+      <div class="nav__links">
+        <a href="index.html" class="nav__link">Passports</a>
+        <a href="profile.html" class="nav__link">My Profile</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-header">
+    <p class="profile-header__label">DMV Food Passport · Official Record</p>
+    <h1 class="profile-header__title">My Food Passport</h1>
+    <p class="profile-header__level" id="profile-level">🗺️ Food Tourist</p>
+    <p class="profile-header__xp" id="profile-xp">0 XP total</p>
+    <div class="progress-bar profile-xp-bar">
+      <div class="progress-bar__fill" id="profile-xp-bar-fill" style="width: 0%"></div>
+    </div>
+    <p class="profile-next-level" id="profile-next-level"></p>
+  </div>
+
+  <div class="profile-stats">
+    <div class="stat">
+      <div class="stat__number" id="stat-stamps">0</div>
+      <div class="stat__label">Stamps Earned</div>
+    </div>
+    <div class="stat">
+      <div class="stat__number" id="stat-neighborhoods">0</div>
+      <div class="stat__label">Neighborhoods</div>
+    </div>
+    <div class="stat">
+      <div class="stat__number">🍕</div>
+      <div class="stat__label">Pizza Explorer</div>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h2 class="profile-section__title">🍕 Pizza Passport Stamps</h2>
+    <div id="stamp-book"></div>
+  </div>
+
+  <div class="profile-section">
+    <h2 class="profile-section__title">📸 My Food Journal</h2>
+    <div id="photo-journal"></div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/passport.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

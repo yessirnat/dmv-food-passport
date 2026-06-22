@@ -1,0 +1,1087 @@
+/* ── Google Fonts: add Courier Prime for passport mono feel ───────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap');
+
+/* ── Reset & Base ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange:       #FF5722;
+  --orange-dark:  #E64A19;
+  --orange-light: #FF8A65;
+  --grad:         linear-gradient(135deg, #FF5722 0%, #FF8A65 100%);
+  --grad-hero:    linear-gradient(160deg, #FF5722 0%, #FF7043 60%, #FFA07A 100%);
+
+  /* Passport palette */
+  --passport-navy:   #1B2A4A;
+  --passport-gold:   #C9A84C;
+  --passport-gold-light: #E8D090;
+  --passport-cream:  #FAF6EE;
+  --passport-ink-red:  #C0392B;
+  --passport-ink-blue: #1a4b8c;
+  --passport-ink-green: #1a6b3a;
+  --passport-page:   #F7F3EB;
+
+  --bg:        #FFF8F5;
+  --bg-white:  #FFFFFF;
+  --card-bg:   #FFFFFF;
+  --text:      #1A1A2E;
+  --text-mid:  #555;
+  --text-light:#999;
+  --border:    #F0E8E4;
+  --radius:    16px;
+  --radius-sm: 10px;
+  --shadow:    0 4px 20px rgba(255,87,34,0.10);
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ── Layout ───────────────────────────────────────────────────────── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+/* ── Nav ──────────────────────────────────────────────────────────── */
+.nav {
+  background: var(--passport-navy);
+  border-bottom: 3px solid var(--passport-gold);
+  padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 3px 16px rgba(0,0,0,0.2);
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.nav__logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--passport-gold);
+  letter-spacing: 0.04em;
+}
+.nav__links { display: flex; gap: 20px; }
+.nav__link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav__link:hover { color: var(--passport-gold); }
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 99px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,87,34,0.35); }
+.btn--primary { background: var(--grad); color: #fff; }
+.btn--secondary { background: #fff; border: 2px solid var(--orange); color: var(--orange); }
+.btn--full { width: 100%; text-align: center; padding: 16px; font-size: 1rem; }
+
+/* ── Passport decorative border mixin ────────────────────────────── */
+.passport-border {
+  border: 2px solid var(--passport-gold);
+  position: relative;
+}
+.passport-border::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed var(--passport-gold-light);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  text-align: center;
+  padding: 64px 20px 52px;
+  background: var(--passport-navy);
+  position: relative;
+  overflow: hidden;
+}
+/* Guilloche-style decorative rings */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 600px; height: 600px;
+  margin: -300px 0 0 -300px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.12);
+  box-shadow:
+    0 0 0 30px rgba(201,168,76,0.06),
+    0 0 0 60px rgba(201,168,76,0.04),
+    0 0 0 90px rgba(201,168,76,0.03);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 44px;
+  background: var(--bg);
+  border-radius: 44px 44px 0 0;
+}
+.hero__emoji { font-size: 3.5rem; margin-bottom: 14px; position: relative; z-index: 1; }
+.hero__title {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--passport-gold);
+  margin-bottom: 4px;
+  position: relative; z-index: 1;
+  letter-spacing: 0.04em;
+}
+.hero__subtitle-top {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.6);
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+.hero__subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.75);
+  max-width: 520px;
+  margin: 0 auto 32px;
+  position: relative; z-index: 1;
+}
+.hero .btn {
+  background: var(--passport-gold);
+  color: var(--passport-navy);
+  position: relative; z-index: 1;
+}
+.hero .btn:hover { box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+
+/* ── Progress Bar ─────────────────────────────────────────────────── */
+.progress-bar {
+  background: rgba(0,0,0,0.08);
+  border-radius: 99px;
+  height: 5px;
+  overflow: hidden;
+  margin: 8px 0 4px;
+}
+.progress-bar__fill {
+  height: 100%;
+  background: var(--grad);
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+.progress-label { font-size: 0.75rem; color: var(--text-light); }
+
+/* ── Index: Passport Cards ────────────────────────────────────────── */
+#passport-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 36px 20px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.passport-card {
+  background: var(--card-bg);
+  border: 2px solid var(--passport-gold);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+/* Inner decorative border */
+.passport-card::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(201,168,76,0.3);
+  border-radius: 12px;
+  pointer-events: none;
+}
+.passport-card:hover:not(.passport-card--coming-soon) {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(201,168,76,0.25);
+}
+.passport-card--coming-soon { opacity: 0.5; cursor: default; }
+.passport-card__emoji { font-size: 2.2rem; margin-bottom: 10px; }
+.passport-card__label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--passport-gold);
+  margin-bottom: 4px;
+}
+.passport-card__name {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--passport-navy);
+  margin-bottom: 6px;
+}
+.passport-card__desc { font-size: 0.83rem; color: var(--text-mid); margin-bottom: 18px; line-height: 1.6; }
+.coming-soon-badge {
+  display: inline-block;
+  background: #F5F5F5;
+  color: var(--text-light);
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Passport Page Layout ─────────────────────────────────────────── */
+.passport-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  height: calc(100vh - 57px);
+}
+#map { width: 100%; height: 100%; }
+
+.sidebar {
+  background: var(--passport-page);
+  border-left: 3px solid var(--passport-gold);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Passport page lines */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 31px,
+    rgba(201,168,76,0.12) 31px,
+    rgba(201,168,76,0.12) 32px
+  );
+  background-attachment: local;
+}
+.sidebar__header {
+  padding: 16px 18px 12px;
+  border-bottom: 2px solid var(--passport-gold);
+  background: var(--passport-navy);
+  position: relative;
+}
+/* Gold corner ornaments */
+.sidebar__header::before,
+.sidebar__header::after {
+  content: '✦';
+  font-size: 0.6rem;
+  color: var(--passport-gold);
+  position: absolute;
+  bottom: 6px;
+}
+.sidebar__header::before { left: 10px; }
+.sidebar__header::after  { right: 10px; }
+
+.sidebar__country {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.6);
+  margin-bottom: 2px;
+}
+.sidebar__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--passport-gold);
+  margin-bottom: 0;
+}
+.sidebar__subtitle { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+/* XP Bar in sidebar */
+.xp-panel {
+  padding: 12px 18px;
+  background: rgba(27,42,74,0.06);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+}
+.xp-panel__level {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--passport-navy);
+  margin-bottom: 5px;
+  font-family: 'Courier Prime', monospace;
+  letter-spacing: 0.05em;
+}
+.xp-panel__details { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-light); margin-top: 4px; }
+
+/* Stamp Counter */
+.stamp-counter {
+  padding: 8px 18px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--passport-navy);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  background: rgba(201,168,76,0.06);
+  text-transform: uppercase;
+}
+
+/* Stamp List */
+#stamp-list { overflow-y: auto; flex: 1; padding: 4px 0; }
+
+.stamp-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.stamp-item:hover { background: rgba(255,87,34,0.05); }
+
+/* Passport entry stamp badge */
+.stamp-seal {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  position: relative;
+  background: #fff;
+}
+.stamp-item--visited .stamp-seal {
+  border: 2px solid var(--passport-ink-red);
+  background: rgba(192,57,43,0.08);
+  color: var(--passport-ink-red);
+  transform: rotate(-6deg);
+  box-shadow: 0 0 0 1px rgba(192,57,43,0.2);
+}
+.stamp-item--gold .stamp-seal {
+  border: 2px solid var(--passport-gold);
+  background: rgba(201,168,76,0.12);
+  color: var(--passport-gold);
+  transform: rotate(-3deg);
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.3);
+}
+.stamp-item--custom .stamp-seal {
+  border-style: dashed;
+  border-color: var(--orange-light);
+}
+
+.stamp-info { flex: 1; min-width: 0; }
+.stamp-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stamp-item--visited .stamp-name { color: var(--passport-navy); }
+.stamp-item--gold .stamp-name { color: var(--orange-dark); font-weight: 700; }
+
+.stamp-neighborhood {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.65rem;
+  color: var(--text-light);
+  letter-spacing: 0.04em;
+}
+
+.stamp-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 3px 5px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+.stamp-item:hover .stamp-edit-btn { opacity: 1; }
+.stamp-edit-btn:hover { background: #FFF0EC; }
+
+/* ── Sidebar Add Button ───────────────────────────────────────────── */
+.sidebar__add-btn-wrap {
+  padding: 10px 14px;
+  border-top: 2px solid rgba(201,168,76,0.2);
+  background: var(--passport-page);
+  flex-shrink: 0;
+}
+.sidebar__add-btn {
+  width: 100%;
+  background: transparent;
+  border: 2px dashed var(--passport-gold);
+  border-radius: 8px;
+  color: var(--passport-navy);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: 'Courier Prime', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sidebar__add-btn:hover { background: var(--passport-gold); color: #fff; }
+
+/* ── Map Pins ─────────────────────────────────────────────────────── */
+.map-pin {
+  width: 42px;
+  height: 42px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+  border: 2.5px solid white;
+}
+.map-pin--unvisited { background: #bbb; }
+.map-pin--visited   { background: var(--grad); }
+.map-pin--gold      { background: linear-gradient(135deg, #B8860B, var(--passport-gold)); border-color: var(--passport-gold); width: 48px; height: 48px; font-size: 1.3rem; }
+
+/* Map Popup */
+.map-popup { font-family: 'Inter', system-ui, sans-serif; min-width: 230px; }
+.popup-header { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+.popup-emoji { font-size: 1.4rem; }
+.popup-name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin: 0; }
+.popup-neighborhood {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.68rem;
+  color: var(--orange);
+  margin: 2px 0 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.popup-description { font-size: 0.78rem; color: var(--text-mid); margin-bottom: 8px; line-height: 1.5; }
+.popup-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.popup-tag {
+  background: #FFF0EC;
+  color: var(--orange);
+  font-size: 0.68rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid #FFD5C8;
+}
+.popup-difficulty { font-size: 0.72rem; color: var(--text-light); margin-bottom: 10px; }
+.popup-checkin-btn {
+  display: block;
+  background: var(--passport-navy);
+  color: var(--passport-gold);
+  text-align: center;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+.popup-checkin-btn:hover { background: var(--orange); color: white; }
+.popup-visited-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'Courier Prime', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--passport-ink-red);
+  border: 2px solid var(--passport-ink-red);
+  background: rgba(192,57,43,0.06);
+  transform: rotate(-1deg);
+}
+
+.leaflet-popup-content-wrapper { border-radius: 12px !important; padding: 0 !important; box-shadow: 0 8px 30px rgba(0,0,0,0.18) !important; border: 2px solid var(--passport-gold) !important; }
+.leaflet-popup-content { margin: 16px !important; }
+.leaflet-popup-tip { background: white !important; }
+
+/* ── Stamp Overlay Animation ──────────────────────────────────────── */
+.stamp-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(27,42,74,0.88);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.stamp-overlay--visible { opacity: 1; pointer-events: auto; }
+
+/* Big rubber stamp seal */
+.stamp-overlay__seal {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 6px solid var(--passport-ink-red);
+  box-shadow: 0 0 0 10px rgba(192,57,43,0.15), inset 0 0 0 8px rgba(192,57,43,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: stampDrop 0.4s cubic-bezier(0.34,1.3,0.64,1) 0.1s both;
+  position: relative;
+}
+.stamp-overlay__seal::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 2px dashed rgba(192,57,43,0.4);
+}
+.stamp-overlay__emoji { font-size: 2.8rem; }
+.stamp-overlay__visited {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--passport-ink-red);
+  margin-top: 4px;
+}
+.stamp-overlay__text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: var(--passport-gold);
+  margin-top: 20px;
+  text-align: center;
+}
+.stamp-overlay__sub { font-family: 'Courier Prime', monospace; font-size: 0.82rem; color: rgba(255,255,255,0.65); margin-top: 6px; letter-spacing: 0.06em; }
+
+@keyframes stampDrop {
+  0%   { transform: scale(2.5) rotate(-15deg); opacity: 0; }
+  70%  { transform: scale(0.95) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* ── Restaurant Page ──────────────────────────────────────────────── */
+.restaurant-page { max-width: 640px; margin: 0 auto; padding: 32px 20px 80px; }
+.restaurant-back { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-light); margin-bottom: 24px; transition: color 0.2s; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-family: 'Courier Prime', monospace; }
+.restaurant-back:hover { color: var(--orange); }
+
+.restaurant-hero {
+  background: var(--passport-navy);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  border: 2px solid var(--passport-gold);
+  position: relative;
+  overflow: hidden;
+}
+.restaurant-hero::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(201,168,76,0.25);
+  border-radius: 12px;
+  pointer-events: none;
+}
+.restaurant-hero__emoji { font-size: 2.8rem; position: relative; z-index: 1; }
+.restaurant-hero__name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--passport-gold); line-height: 1.2; }
+.restaurant-hero__neighborhood {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  color: var(--orange-light);
+  font-weight: 600;
+  margin-top: 4px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.restaurant-hero__address { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.restaurant-hero__description { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 8px; line-height: 1.6; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag {
+  background: rgba(201,168,76,0.15);
+  color: var(--passport-gold);
+  font-size: 0.68rem;
+  padding: 3px 10px;
+  border-radius: 99px;
+  border: 1px solid rgba(201,168,76,0.3);
+  font-weight: 600;
+  font-family: 'Courier Prime', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Step Progress Bar */
+.step-progress {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 16px;
+  border: 1.5px solid var(--border);
+}
+.step-progress__track {
+  background: #F0E8E4;
+  border-radius: 99px;
+  height: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.step-progress__fill {
+  height: 100%;
+  background: var(--grad);
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+.step-progress__labels { display: flex; justify-content: space-between; }
+.step-label { font-size: 0.68rem; font-weight: 600; color: var(--text-light); transition: color 0.3s; font-family: 'Courier Prime', monospace; letter-spacing: 0.04em; text-transform: uppercase; }
+.step-label--active { color: var(--orange); }
+.step-label--done { color: var(--passport-ink-green); }
+
+/* Step Sections */
+.section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 16px;
+  border: 1.5px solid var(--border);
+}
+.section__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.step-section { position: relative; transition: opacity 0.4s, transform 0.4s; }
+.step-section--locked { opacity: 0.4; pointer-events: none; user-select: none; }
+.step-section--unlocking { animation: sectionUnlock 0.5s cubic-bezier(0.34,1.4,0.64,1) forwards; }
+@keyframes sectionUnlock {
+  0%   { opacity: 0.4; transform: scale(0.98) translateY(6px); }
+  60%  { opacity: 1;   transform: scale(1.01) translateY(-2px); }
+  100% { opacity: 1;   transform: scale(1)   translateY(0); }
+}
+.step-section--active { opacity: 1; pointer-events: auto; }
+
+.lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250,246,238,0.75);
+  border-radius: var(--radius);
+  z-index: 2;
+  gap: 5px;
+  backdrop-filter: blur(1px);
+}
+.step-section--active .lock-overlay,
+.step-section--done .lock-overlay { display: none; }
+.lock-overlay__icon { font-size: 1.4rem; }
+.lock-overlay__text { font-size: 0.75rem; color: var(--text-light); font-weight: 600; font-family: 'Courier Prime', monospace; letter-spacing: 0.04em; }
+
+.step-done-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(26,107,58,0.08);
+  color: var(--passport-ink-green);
+  border: 1px solid rgba(26,107,58,0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 12px;
+  font-family: 'Courier Prime', monospace;
+  letter-spacing: 0.04em;
+}
+
+/* Check-in */
+.checkin-btn-group { display: flex; gap: 12px; }
+.checkin-option {
+  flex: 1;
+  background: var(--passport-cream);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.checkin-option:hover { border-color: var(--orange); background: #FFF0EC; border-style: solid; }
+.checkin-option--selected { border-color: var(--passport-ink-red) !important; background: rgba(192,57,43,0.06) !important; border-style: solid !important; box-shadow: 0 0 0 3px rgba(192,57,43,0.1); }
+.checkin-option__icon { font-size: 1.8rem; margin-bottom: 6px; }
+.checkin-option__label { font-size: 0.8rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; }
+.checkin-option__desc { font-size: 0.7rem; color: var(--text-light); margin-top: 3px; }
+.already-visited { background: rgba(26,107,58,0.08); border: 1px solid rgba(26,107,58,0.25); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.85rem; color: var(--passport-ink-green); font-weight: 600; font-family: 'Courier Prime', monospace; }
+.already-visited span { opacity: 0.7; font-size: 0.75rem; margin-left: 8px; }
+
+/* Sliders */
+.slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.slider-label { width: 72px; font-size: 0.78rem; font-weight: 700; color: var(--text-mid); flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.04em; font-family: 'Courier Prime', monospace; }
+.slider { flex: 1; accent-color: var(--orange); cursor: pointer; height: 6px; }
+.slider-value { width: 32px; text-align: right; font-size: 0.95rem; color: var(--orange); font-weight: 800; flex-shrink: 0; }
+.slider-row--overall { background: var(--passport-cream); border-radius: var(--radius-sm); padding: 12px 16px; margin-top: 6px; border: 1.5px solid var(--passport-gold); }
+.overall-score { font-size: 2.2rem; font-weight: 800; color: var(--passport-navy); font-family: 'Playfair Display', serif; }
+
+/* Return buttons */
+.return-buttons { display: flex; gap: 10px; }
+.return-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  background: #fff;
+  color: var(--text-mid);
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.return-btn:hover { border-color: var(--orange); color: var(--orange); }
+.return-btn--active.return-btn--yes { background: rgba(26,107,58,0.08); border-color: var(--passport-ink-green); color: var(--passport-ink-green); }
+.return-btn--active.return-btn--no  { background: rgba(192,57,43,0.08); border-color: var(--passport-ink-red); color: var(--passport-ink-red); }
+
+/* Photo upload */
+.photo-upload-area {
+  border: 2px dashed rgba(201,168,76,0.4);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 14px;
+  background: var(--passport-cream);
+}
+.photo-upload-area:hover { border-color: var(--passport-gold); background: rgba(201,168,76,0.08); }
+.photo-upload-area__icon { font-size: 1.8rem; margin-bottom: 6px; }
+.photo-upload-area__label { font-size: 0.8rem; color: var(--text-light); font-family: 'Courier Prime', monospace; letter-spacing: 0.04em; }
+.photo-upload-input { display: none; }
+#photo-preview { display: flex; flex-wrap: wrap; gap: 10px; }
+.photo-thumb { width: 88px; height: 88px; object-fit: cover; border-radius: 8px; border: 2px solid var(--border); }
+.photo-thumb--new { border-color: var(--orange); }
+
+/* Stamp submit button */
+.stamp-btn { animation: stampPulse 1.8s ease-in-out infinite; }
+@keyframes stampPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,87,34,0.4); }
+  50%      { box-shadow: 0 0 0 12px rgba(255,87,34,0); }
+}
+
+/* ── Profile Page ─────────────────────────────────────────────────── */
+.profile-header {
+  background: var(--passport-navy);
+  padding: 48px 20px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--passport-gold);
+}
+.profile-header::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 500px; height: 500px;
+  margin: -250px 0 0 -250px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.1);
+  box-shadow: 0 0 0 40px rgba(201,168,76,0.05), 0 0 0 80px rgba(201,168,76,0.03);
+  pointer-events: none;
+}
+.profile-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 36px;
+  background: var(--bg);
+  border-radius: 36px 36px 0 0;
+}
+.profile-header__label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.6);
+  margin-bottom: 6px;
+  position: relative; z-index: 1;
+}
+.profile-header__title { font-size: 1.8rem; color: var(--passport-gold); margin-bottom: 6px; position: relative; z-index: 1; }
+.profile-header__level { font-size: 0.9rem; color: rgba(255,255,255,0.8); font-weight: 700; margin-bottom: 4px; font-family: 'Courier Prime', monospace; letter-spacing: 0.06em; position: relative; z-index: 1; }
+.profile-header__xp { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-bottom: 14px; position: relative; z-index: 1; }
+.profile-xp-bar { max-width: 280px; margin: 0 auto 6px; }
+.profile-xp-bar .progress-bar { background: rgba(255,255,255,0.15); }
+.profile-xp-bar .progress-bar__fill { background: var(--passport-gold); }
+.profile-next-level { font-size: 0.72rem; color: rgba(255,255,255,0.5); font-family: 'Courier Prime', monospace; letter-spacing: 0.04em; position: relative; z-index: 1; }
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  background: var(--card-bg);
+  margin: 0 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  border: 2px solid var(--passport-gold);
+}
+.stat { flex: 1; text-align: center; padding: 20px 16px; border-right: 1px solid var(--border); }
+.stat:last-child { border-right: none; }
+.stat__number { font-size: 2rem; font-weight: 800; color: var(--passport-navy); font-family: 'Playfair Display', serif; }
+.stat__label { font-size: 0.65rem; color: var(--text-light); margin-top: 3px; font-weight: 700; font-family: 'Courier Prime', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.profile-section { max-width: 1000px; margin: 0 auto; padding: 32px 20px; }
+.profile-section__title {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--passport-navy);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--passport-gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Profile stamp seals */
+#stamp-book {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.profile-stamp {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px 14px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  border: 1.5px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.profile-stamp--visited {
+  border-color: var(--passport-gold);
+  cursor: pointer;
+  background: var(--passport-cream);
+}
+.profile-stamp--visited:hover { transform: translateY(-3px) rotate(1deg); box-shadow: 0 8px 24px rgba(201,168,76,0.25); }
+.profile-stamp--gold { border-color: var(--passport-gold); background: rgba(201,168,76,0.08); }
+.profile-stamp--empty { opacity: 0.38; }
+
+/* The seal circle */
+.profile-stamp__seal {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  border: 2px dashed #ddd;
+  background: #f8f8f8;
+}
+.profile-stamp--visited .profile-stamp__seal {
+  border: 3px solid var(--passport-ink-red);
+  background: rgba(192,57,43,0.06);
+  transform: rotate(-5deg);
+}
+.profile-stamp--gold .profile-stamp__seal {
+  border: 3px solid var(--passport-gold);
+  background: rgba(201,168,76,0.1);
+  transform: rotate(-3deg);
+}
+
+.profile-stamp__name { font-size: 0.75rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.profile-stamp__neighborhood { font-family: 'Courier Prime', monospace; font-size: 0.62rem; color: var(--text-light); letter-spacing: 0.04em; text-transform: uppercase; }
+.profile-stamp__date { font-family: 'Courier Prime', monospace; font-size: 0.62rem; color: var(--passport-ink-red); margin-top: 5px; font-weight: 700; }
+.profile-stamp__gold-badge { font-size: 0.62rem; color: var(--passport-gold); margin-top: 4px; font-weight: 700; font-family: 'Courier Prime', monospace; letter-spacing: 0.04em; text-transform: uppercase; }
+
+/* Photo Journal */
+#photo-journal {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+}
+.journal-photo { border-radius: var(--radius); overflow: hidden; background: var(--card-bg); box-shadow: var(--shadow-card); border: 2px solid var(--passport-gold); }
+.journal-photo__img { width: 100%; height: 150px; object-fit: cover; }
+.journal-photo__caption { padding: 8px 10px; font-size: 0.72rem; color: var(--text-mid); font-weight: 600; font-family: 'Courier Prime', monospace; letter-spacing: 0.04em; text-transform: uppercase; }
+
+.empty-state { color: var(--text-light); font-size: 0.85rem; padding: 16px 0; font-family: 'Courier Prime', monospace; }
+
+/* ── Modal ────────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+  width: 100vw !important; height: 100vh !important;
+  background: rgba(27,42,74,0.7);
+  z-index: 2000;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+  backdrop-filter: blur(4px);
+}
+.modal-backdrop--visible { opacity: 1; pointer-events: auto; }
+
+.modal {
+  background: var(--passport-cream);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 3px solid var(--passport-gold);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  transform: translateY(24px) scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.34,1.4,0.64,1);
+  position: relative;
+}
+/* Inner dashed border — passport style */
+.modal::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed rgba(201,168,76,0.35);
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 0;
+}
+.modal-backdrop--visible .modal { transform: translateY(0) scale(1); }
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+  margin-bottom: 16px;
+  position: relative; z-index: 1;
+}
+.modal__label-top {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--passport-gold);
+  margin-bottom: 2px;
+}
+.modal__title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--passport-navy); }
+.modal__close {
+  background: var(--passport-navy);
+  border: none;
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--passport-gold);
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.modal__close:hover { background: var(--orange); color: white; }
+
+.modal__field { padding: 0 24px 14px; position: relative; z-index: 1; }
+.modal__field-row { display: flex; gap: 0; }
+.modal__field-row .modal__field { flex: 1; }
+.modal__label { display: block; font-size: 0.7rem; font-weight: 700; color: var(--passport-navy); margin-bottom: 5px; font-family: 'Courier Prime', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+.modal__optional { font-weight: 400; color: var(--text-light); text-transform: none; letter-spacing: 0; }
+.modal__input {
+  width: 100%;
+  background: #fff;
+  border: 1.5px solid rgba(201,168,76,0.35);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.875rem;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.modal__input:focus { border-color: var(--passport-gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
+.modal__textarea { min-height: 72px; resize: vertical; }
+
+.modal__actions {
+  display: flex;
+  gap: 10px;
+  padding: 4px 24px 24px;
+  justify-content: flex-end;
+  position: relative; z-index: 1;
+}
+.modal__actions .btn { padding: 10px 22px; font-size: 0.8rem; }
+.modal__delete-btn {
+  background: transparent;
+  border: 2px solid var(--passport-ink-red);
+  color: var(--passport-ink-red);
+  border-radius: 99px;
+  padding: 10px 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, color 0.2s;
+}
+.modal__delete-btn:hover { background: var(--passport-ink-red); color: white; }
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .passport-layout { grid-template-columns: 1fr; grid-template-rows: 55vh auto; height: auto; }
+  .sidebar { height: 45vh; border-left: none; border-top: 3px solid var(--passport-gold); }
+  .nav__links { gap: 14px; }
+  .profile-stats { margin: 0 16px; }
+  .checkin-btn-group { flex-direction: column; }
+}
+@media (max-width: 480px) {
+  #passport-grid { grid-template-columns: 1fr; padding: 24px 16px 48px; }
+  #stamp-book { grid-template-columns: repeat(2, 1fr); }
+}

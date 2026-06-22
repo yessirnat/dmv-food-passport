@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check In — DMV Food Passport</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="restaurant">
+
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">🗺️ DMV Food Passport</a>
+      <div class="nav__links">
+        <a href="passport.html?type=pizza" class="nav__link">← Back to Map</a>
+        <a href="profile.html" class="nav__link">My Profile</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="restaurant-page">
+    <a href="passport.html?type=pizza" class="restaurant-back">← Back to Pizza Passport Map</a>
+
+    <div class="restaurant-hero">
+      <div class="restaurant-hero__emoji" id="restaurant-emoji">🍕</div>
+      <div>
+        <h1 class="restaurant-hero__name" id="restaurant-name">Loading...</h1>
+        <p class="restaurant-hero__neighborhood" id="restaurant-neighborhood"></p>
+        <p class="restaurant-hero__address" id="restaurant-address"></p>
+        <p class="restaurant-hero__description" id="restaurant-description"></p>
+        <div class="tags" id="restaurant-tags"></div>
+      </div>
+    </div>
+
+    <!-- Step progress bar -->
+    <div class="step-progress" id="step-progress">
+      <div class="step-progress__track">
+        <div class="step-progress__fill" id="step-progress-fill" style="width: 0%"></div>
+      </div>
+      <div class="step-progress__labels">
+        <span class="step-label step-label--active" id="step-label-1">1. Check In</span>
+        <span class="step-label" id="step-label-2">2. Rate It</span>
+        <span class="step-label" id="step-label-3">3. Return?</span>
+        <span class="step-label" id="step-label-4">4. Photos</span>
+      </div>
+    </div>
+
+    <form id="ranking-form">
+
+      <!-- Step 1: Check In -->
+      <div class="section step-section step-section--active" id="checkin-section" data-step="1">
+        <h2 class="section__title">✅ Step 1 — Check In</h2>
+        <div class="checkin-btn-group" id="checkin-options">
+          <div class="checkin-option" id="checkin-manual">
+            <div class="checkin-option__icon">📍</div>
+            <div class="checkin-option__label">I'm here!</div>
+            <div class="checkin-option__desc">Manual check-in</div>
+          </div>
+          <div class="checkin-option" id="checkin-photo-trigger">
+            <div class="checkin-option__icon">📷</div>
+            <div class="checkin-option__label">Snap a photo</div>
+            <div class="checkin-option__desc">Upload food or place photo</div>
+          </div>
+        </div>
+        <input type="checkbox" id="confirm-checkin" style="display:none">
+      </div>
+
+      <!-- Step 2: Rate It (locked until check-in) -->
+      <div class="section step-section step-section--locked" id="rating-section" data-step="2">
+        <div class="lock-overlay">
+          <div class="lock-overlay__icon">🔒</div>
+          <div class="lock-overlay__text">Check in first to unlock</div>
+        </div>
+        <h2 class="section__title">⭐ Step 2 — Rate It</h2>
+        <div id="sliders-container"></div>
+        <button type="button" class="btn btn--secondary btn--full" id="done-rating-btn" style="margin-top:16px; display:none">Looks good →</button>
+      </div>
+
+      <!-- Step 3: Would you return? (locked until rated) -->
+      <div class="section step-section step-section--locked" id="return-section" data-step="3">
+        <div class="lock-overlay">
+          <div class="lock-overlay__icon">🔒</div>
+          <div class="lock-overlay__text">Rate it first to unlock</div>
+        </div>
+        <h2 class="section__title">🔄 Step 3 — Would you return?</h2>
+        <div class="return-buttons">
+          <button type="button" class="return-btn return-btn--yes" id="return-yes">👍 Yes!</button>
+          <button type="button" class="return-btn return-btn--no" id="return-no">👎 Probably not</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Photos (locked until return answered) -->
+      <div class="section step-section step-section--locked" id="photos-section" data-step="4">
+        <div class="lock-overlay">
+          <div class="lock-overlay__icon">🔒</div>
+          <div class="lock-overlay__text">Answer above to unlock</div>
+        </div>
+        <h2 class="section__title">📸 Step 4 — Add Photos</h2>
+        <label class="photo-upload-area" for="photo-input">
+          <div class="photo-upload-area__icon">📷</div>
+          <div class="photo-upload-area__label">Tap to add food or restaurant photos</div>
+        </label>
+        <input type="file" id="photo-input" class="photo-upload-input" accept="image/*" multiple>
+        <div id="photo-preview"></div>
+        <button type="button" class="btn btn--secondary btn--full" id="skip-photos-btn" style="margin-top:12px">Skip photos →</button>
+      </div>
+
+      <!-- Submit (hidden until all steps done) -->
+      <div id="submit-section" style="display:none">
+        <button type="submit" class="btn btn--primary btn--full stamp-btn">Stamp My Passport 🍕</button>
+      </div>
+
+    </form>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/passport.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
