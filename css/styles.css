@@ -1077,7 +1077,10 @@ img { max-width: 100%; display: block; }
 @media (max-width: 768px) {
   .passport-layout { grid-template-columns: 1fr; grid-template-rows: 55vh auto; height: auto; }
   .sidebar { height: 45vh; border-left: none; border-top: 3px solid var(--passport-gold); }
-  .nav__links { gap: 14px; }
+  .nav__links { gap: 10px; }
+  .nav__link { font-size: 0.72rem; white-space: nowrap; }
+  .nav__logo { font-size: 0.95rem; }
+  .nav__inner { padding: 0 14px; }
   .profile-stats { margin: 0 16px; }
   .checkin-btn-group { flex-direction: column; }
 }

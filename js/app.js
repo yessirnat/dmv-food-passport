@@ -1,5 +1,11 @@
 // Shared utilities and page-specific init
 
+function escapeHTML(str) {
+  const div = document.createElement("div");
+  div.appendChild(document.createTextNode(String(str || "")));
+  return div.innerHTML;
+}
+
 function getParam(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
@@ -109,10 +115,10 @@ function renderStampSidebar(passport, custom = []) {
     item.innerHTML = `
       <div class="stamp-seal">${sealIcon}</div>
       <div class="stamp-info">
-        <div class="stamp-name">${r.name}</div>
-        <div class="stamp-neighborhood">${r.neighborhood}</div>
+        <div class="stamp-name">${escapeHTML(r.name)}</div>
+        <div class="stamp-neighborhood">${escapeHTML(r.neighborhood)}</div>
       </div>
-      ${isCustom ? `<button class="stamp-edit-btn" data-id="${r.id}" title="Edit">✏️</button>` : ""}
+      ${isCustom ? `<button class="stamp-edit-btn" data-id="${escapeHTML(r.id)}" title="Edit">✏️</button>` : ""}
     `;
 
     // Click row → fly to pin (only if restaurant has coordinates)
@@ -278,7 +284,7 @@ function initRestaurantPage() {
 
   // Tags
   const tagsEl = document.getElementById("restaurant-tags");
-  if (tagsEl) tagsEl.innerHTML = restaurant.tags.map(t => `<span class="tag">${t}</span>`).join("");
+  if (tagsEl) tagsEl.innerHTML = restaurant.tags.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join("");
 
   // Ranking sliders (built before unlock logic runs)
   setupSliders(passport.attributes || []);
@@ -669,8 +675,8 @@ function renderProfileStamps() {
     stamp.className = `profile-stamp${visited ? (gold ? " profile-stamp--gold" : " profile-stamp--visited") : " profile-stamp--empty"}`;
     stamp.innerHTML = `
       <div class="profile-stamp__seal">${visited ? "🍕" : "·"}</div>
-      <div class="profile-stamp__name">${r.name}</div>
-      <div class="profile-stamp__neighborhood">${r.neighborhood}</div>
+      <div class="profile-stamp__name">${escapeHTML(r.name)}</div>
+      <div class="profile-stamp__neighborhood">${escapeHTML(r.neighborhood)}</div>
       ${visited && visit.date ? `<div class="profile-stamp__date">${formatDate(visit.date)}</div>` : ""}
       ${gold ? `<div class="profile-stamp__gold-badge">★ Top Rated</div>` : ""}
     `;
@@ -696,8 +702,8 @@ function renderPhotoJournal() {
       const wrap = document.createElement("div");
       wrap.className = "journal-photo";
       wrap.innerHTML = `
-        <img src="${src}" alt="${result?.restaurant?.name || "Food photo"}" class="journal-photo__img">
-        <div class="journal-photo__caption">${result?.restaurant?.name || ""}</div>
+        <img src="${escapeHTML(src)}" alt="${escapeHTML(result?.restaurant?.name || "Food photo")}" class="journal-photo__img">
+        <div class="journal-photo__caption">${escapeHTML(result?.restaurant?.name || "")}</div>
       `;
       grid.appendChild(wrap);
     });
