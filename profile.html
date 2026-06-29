@@ -20,6 +20,10 @@
     </div>
   </nav>
 
+  <style>
+    body { padding-bottom: 72px; }
+  </style>
+
   <div class="profile-header">
     <p class="profile-header__label">DMV Food Passport · Official Record</p>
     <h1 class="profile-header__title">My Food Passport</h1>
@@ -55,6 +59,21 @@
     <h2 class="profile-section__title">📸 My Food Journal</h2>
     <div id="photo-journal"></div>
   </div>
+
+  <nav class="game-tab-bar">
+    <a href="index.html" class="game-tab">
+      <span class="game-tab-icon">🗺️</span>
+      <span class="game-tab-label">Passports</span>
+    </a>
+    <a href="passport.html?type=pizza" class="game-tab">
+      <span class="game-tab-icon">🍕</span>
+      <span class="game-tab-label">Explore</span>
+    </a>
+    <a href="profile.html" class="game-tab game-tab--active">
+      <span class="game-tab-icon">👤</span>
+      <span class="game-tab-label">Profile</span>
+    </a>
+  </nav>
 
   <script src="js/data.js"></script>
   <script src="js/passport.js"></script>

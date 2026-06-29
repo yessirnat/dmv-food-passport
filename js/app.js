@@ -59,43 +59,147 @@ function initIndexPage() {
 }
 
 // ── Passport page ────────────────────────────────────────────────────────────
+let _passportAllRestaurants = [];
+
 function initPassportPage() {
   const passportId = getParam("type") || "pizza";
   const passport = PASSPORTS[passportId];
   if (!passport) return;
 
-  document.getElementById("passport-title").textContent = `${passport.emoji} ${passport.name}`;
-
   // Map
   initMap("map", 38.9072, -77.0369, 12);
+  // Leaflet needs to recalculate size after fixed CSS layout settles
+  setTimeout(() => map && map.invalidateSize(), 200);
 
-  // Merge built-in + custom restaurants for map
+  // Merge built-in + custom restaurants
   const custom = getCustomRestaurants(passportId);
-  const allRestaurants = [...passport.restaurants, ...custom];
-  loadPizzaPins(allRestaurants);
+  _passportAllRestaurants = [...passport.restaurants, ...custom];
+  loadPizzaPins(_passportAllRestaurants);
 
-  // Stamp sidebar
-  renderStampSidebar(passport, custom);
+  // HUD
+  renderGameHUD(passport, custom);
 
-  // XP bar
-  renderXPBar();
+  // List view
+  const listTitle = document.getElementById("game-list-title");
+  if (listTitle) listTitle.textContent = `${passport.emoji} ${passport.name}`;
+  renderStampList(passport, custom);
 
   // Modal
   initRestaurantModal(passportId, passport);
 
+  // Tab switching
+  document.getElementById("btn-map-view").addEventListener("click", () => switchGameView("map"));
+  document.getElementById("btn-list-view").addEventListener("click", () => switchGameView("list"));
+
+  // Bottom sheet close
+  document.getElementById("sheet-close-btn").addEventListener("click", closeBottomSheet);
+
+  // Seed peek state with first unvisited restaurant
+  const visits = getVisits();
+  const firstUnvisited = _passportAllRestaurants.find(r => !visits[r.id]?.checkedIn);
+  if (firstUnvisited) {
+    document.getElementById("sheet-peek-name").textContent = firstUnvisited.name;
+    document.getElementById("sheet-peek-sub").textContent = `${firstUnvisited.neighborhood} · unvisited`;
+  }
+
   // Handle stamp animation after returning from check-in
   const justCheckedIn = getParam("stamped");
   if (justCheckedIn) {
-    const allResults = allRestaurants.find(r => r.id === justCheckedIn);
-    if (allResults) {
-      showStampAnimation(allResults.name);
-      flyToRestaurant(justCheckedIn);
+    const r = _passportAllRestaurants.find(r => r.id === justCheckedIn);
+    if (r) {
+      showStampAnimation(r.name);
+      setTimeout(() => flyToRestaurant(justCheckedIn), 400);
+      setTimeout(() => openBottomSheet(r), 1200);
     }
     history.replaceState({}, "", `passport.html?type=${passportId}`);
   }
 }
 
-function renderStampSidebar(passport, custom = []) {
+function renderGameHUD(passport, custom = []) {
+  const xp = getXP();
+  const level = getCurrentLevel();
+  const progress = getXPProgress();
+  const next = getNextLevel();
+  const total = [...passport.restaurants, ...custom].length;
+  const count = getStampCountWithCustom(passport.id);
+
+  const levelEl = document.getElementById("level-name");
+  const xpFill = document.getElementById("xp-bar-fill");
+  const xpLabel = document.getElementById("xp-value");
+  const nextEl = document.getElementById("next-level");
+  const counterEl = document.getElementById("stamp-counter");
+
+  if (levelEl) levelEl.textContent = `${level.icon} ${level.name}`;
+  if (xpFill) xpFill.style.width = `${progress.percent}%`;
+  if (xpLabel) xpLabel.textContent = `${xp} XP`;
+  if (nextEl) nextEl.textContent = next ? `${progress.xpNeeded - progress.xpInLevel} XP to ${next.name}` : "";
+  if (counterEl) counterEl.textContent = `${count}/${total} stamps`;
+}
+
+function switchGameView(view) {
+  const mapToggle = document.getElementById("btn-map-view");
+  const listToggle = document.getElementById("btn-list-view");
+  const listView = document.getElementById("game-list-view");
+  const sheet = document.getElementById("game-sheet");
+  const viewToggle = document.querySelector(".game-view-toggle");
+
+  if (view === "list") {
+    listView.style.display = "block";
+    sheet.style.display = "none";
+    mapToggle.classList.remove("view-toggle-btn--active");
+    listToggle.classList.add("view-toggle-btn--active");
+  } else {
+    listView.style.display = "none";
+    sheet.style.display = "block";
+    mapToggle.classList.add("view-toggle-btn--active");
+    listToggle.classList.remove("view-toggle-btn--active");
+  }
+}
+
+function openBottomSheet(restaurant) {
+  const visit = getVisit(restaurant.id);
+  const visited = visit?.checkedIn;
+
+  document.getElementById("sheet-peek").style.display = "none";
+  document.getElementById("sheet-detail").style.display = "block";
+
+  document.getElementById("sheet-detail-name").textContent = restaurant.name;
+  document.getElementById("sheet-detail-location").textContent = `${restaurant.neighborhood} · ${restaurant.city}`;
+  document.getElementById("sheet-detail-address").textContent = restaurant.address || "";
+
+  const tagsEl = document.getElementById("sheet-detail-tags");
+  tagsEl.innerHTML = (restaurant.tags || []).map(t => `<span class="sheet-detail-tag">${escapeHTML(t)}</span>`).join("");
+
+  const descEl = document.getElementById("sheet-detail-desc");
+  descEl.textContent = restaurant.description || "";
+  descEl.style.display = restaurant.description ? "block" : "none";
+
+  const xpRow = document.getElementById("sheet-xp-row");
+  const checkinBtn = document.getElementById("sheet-checkin-btn");
+  const visitedBadge = document.getElementById("sheet-visited-badge");
+  const visitedDate = document.getElementById("sheet-visited-date");
+  const updateLink = document.getElementById("sheet-update-link");
+
+  if (visited) {
+    xpRow.style.display = "none";
+    checkinBtn.style.display = "none";
+    visitedBadge.style.display = "flex";
+    visitedDate.textContent = visit.date ? formatDate(visit.date) : "";
+    updateLink.href = `restaurant.html?id=${restaurant.id}`;
+  } else {
+    xpRow.style.display = "flex";
+    checkinBtn.style.display = "block";
+    checkinBtn.href = `restaurant.html?id=${restaurant.id}`;
+    visitedBadge.style.display = "none";
+  }
+}
+
+function closeBottomSheet() {
+  document.getElementById("sheet-peek").style.display = "block";
+  document.getElementById("sheet-detail").style.display = "none";
+}
+
+function renderStampList(passport, custom = []) {
   const list = document.getElementById("stamp-list");
   if (!list) return;
   list.innerHTML = "";
@@ -121,13 +225,19 @@ function renderStampSidebar(passport, custom = []) {
       ${isCustom ? `<button class="stamp-edit-btn" data-id="${escapeHTML(r.id)}" title="Edit">✏️</button>` : ""}
     `;
 
-    // Click row → fly to pin (only if restaurant has coordinates)
     item.addEventListener("click", e => {
       if (e.target.classList.contains("stamp-edit-btn")) return;
-      if (r.lat && r.lng) flyToRestaurant(r.id);
+      switchGameView("map");
+      if (r.lat && r.lng) {
+        setTimeout(() => {
+          flyToRestaurant(r.id);
+          openBottomSheet(r);
+        }, 100);
+      } else {
+        openBottomSheet(r);
+      }
     });
 
-    // Edit button
     const editBtn = item.querySelector(".stamp-edit-btn");
     if (editBtn) {
       editBtn.addEventListener("click", e => {
@@ -138,11 +248,6 @@ function renderStampSidebar(passport, custom = []) {
 
     list.appendChild(item);
   });
-
-  const total = allRestaurants.length;
-  const count = getStampCountWithCustom(passport.id);
-  const counter = document.getElementById("stamp-counter");
-  if (counter) counter.textContent = `${count} / ${total} stamps collected`;
 }
 
 // ── Add / Edit Restaurant Modal ───────────────────────────────────────────────
@@ -215,13 +320,12 @@ function saveModalRestaurant() {
   saveCustomRestaurant(data);
   closeModal();
 
-  // Refresh sidebar and map
+  // Refresh list and map
   const custom = getCustomRestaurants(_currentPassportId);
-  renderStampSidebar(_currentPassport, custom);
-
-  // Re-load all pins
-  const allRestaurants = [..._currentPassport.restaurants, ...custom];
-  loadPizzaPins(allRestaurants);
+  renderStampList(_currentPassport, custom);
+  _passportAllRestaurants = [..._currentPassport.restaurants, ...custom];
+  loadPizzaPins(_passportAllRestaurants);
+  renderGameHUD(_currentPassport, custom);
 }
 
 function deleteModalRestaurant() {
@@ -233,10 +337,10 @@ function deleteModalRestaurant() {
   closeModal();
 
   const custom = getCustomRestaurants(_currentPassportId);
-  renderStampSidebar(_currentPassport, custom);
-
-  const allRestaurants = [..._currentPassport.restaurants, ...custom];
-  loadPizzaPins(allRestaurants);
+  renderStampList(_currentPassport, custom);
+  _passportAllRestaurants = [..._currentPassport.restaurants, ...custom];
+  loadPizzaPins(_passportAllRestaurants);
+  renderGameHUD(_currentPassport, custom);
 }
 
 function renderXPBar() {

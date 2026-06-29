@@ -1088,3 +1088,338 @@ img { max-width: 100%; display: block; }
   #passport-grid { grid-template-columns: 1fr; padding: 24px 16px 48px; }
   #stamp-book { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Game Mode (passport.html Explorer layout) ────────────────────── */
+.game-body {
+  background: #0a0f1e;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.game-map {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Top HUD */
+.game-hud-top {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px 16px 32px;
+  background: linear-gradient(to bottom, rgba(10,15,30,0.88) 0%, rgba(10,15,30,0) 100%);
+  pointer-events: none;
+}
+.hud-left { flex: 1; }
+.hud-level {
+  color: #ffcc00;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+}
+.hud-xp-row { display: flex; align-items: center; gap: 8px; max-width: 220px; }
+.hud-xp-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.hud-xp-fill {
+  height: 100%;
+  background: #ffcc00;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+.hud-xp-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+}
+.hud-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.hud-stamp-badge {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(201,168,76,0.5);
+  border-radius: 99px;
+  padding: 3px 12px;
+  color: var(--passport-gold);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.hud-next-level {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.35);
+}
+
+/* View toggle */
+.game-view-toggle {
+  position: fixed;
+  top: 72px; right: 12px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.view-toggle-btn {
+  background: rgba(10,15,30,0.85);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.view-toggle-btn--active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: white;
+}
+
+/* Bottom sheet */
+.game-sheet {
+  position: fixed;
+  bottom: 56px; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10,15,30,0.95);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px 18px 0 0;
+  transition: transform 0.3s ease;
+}
+.sheet-handle-bar { padding: 8px 0 0; text-align: center; }
+.sheet-handle {
+  display: inline-block;
+  width: 36px; height: 3px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 2px;
+}
+
+/* Peek state */
+.sheet-peek { padding: 8px 18px 14px; }
+.sheet-nearby-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 8px;
+}
+.sheet-peek-row { display: flex; align-items: center; gap: 12px; }
+.sheet-peek-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+.sheet-peek-name { color: white; font-size: 0.88rem; font-weight: 500; }
+.sheet-peek-sub { color: rgba(255,255,255,0.4); font-size: 0.72rem; margin-top: 1px; }
+.sheet-peek-distance {
+  margin-left: auto;
+  color: #ff9800;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+/* Expanded detail state */
+.sheet-detail { padding: 8px 18px 16px; }
+.sheet-detail-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.sheet-detail-emoji {
+  width: 46px; height: 46px;
+  background: var(--passport-navy);
+  border: 2px solid var(--passport-gold);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.sheet-detail-info { flex: 1; min-width: 0; }
+.sheet-detail-name { color: white; font-size: 1rem; font-weight: 600; }
+.sheet-detail-location { color: rgba(255,255,255,0.45); font-size: 0.75rem; margin-top: 2px; }
+.sheet-detail-address { color: rgba(255,255,255,0.3); font-size: 0.7rem; margin-top: 1px; }
+.sheet-close-btn {
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: rgba(255,255,255,0.5);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.sheet-close-btn:hover { background: rgba(255,255,255,0.15); }
+.sheet-detail-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.sheet-detail-tag {
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.55);
+  font-size: 0.68rem;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-family: 'Courier Prime', monospace;
+  letter-spacing: 0.04em;
+}
+.sheet-detail-desc { color: rgba(255,255,255,0.5); font-size: 0.78rem; line-height: 1.5; margin-bottom: 10px; }
+.sheet-xp-row {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,204,0,0.08);
+  border: 1px solid rgba(255,204,0,0.2);
+  border-radius: 8px;
+  padding: 7px 12px;
+  margin-bottom: 10px;
+}
+.sheet-xp-text { color: rgba(255,255,255,0.5); font-size: 0.72rem; font-family: 'Courier Prime', monospace; }
+.sheet-xp-earn { color: #ffcc00; font-size: 0.72rem; font-family: 'Courier Prime', monospace; font-weight: 700; }
+.sheet-checkin-btn {
+  display: block;
+  width: 100%;
+  background: var(--orange);
+  color: white;
+  text-align: center;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 13px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+.sheet-checkin-btn:hover { background: var(--orange-dark); }
+.sheet-visited-badge {
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.78rem;
+  padding: 8px 0 2px;
+  display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+}
+.sheet-update-link {
+  color: var(--passport-gold);
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+.sheet-update-link:hover { text-decoration: underline; }
+
+/* List view overlay */
+.game-list-view {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  bottom: 56px;
+  z-index: 90;
+  background: #0d1220;
+  overflow-y: auto;
+  padding-bottom: 16px;
+}
+.game-list-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 56px 18px 12px;
+  background: rgba(10,15,30,0.95);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: sticky; top: 0; z-index: 5;
+}
+.game-list-title {
+  color: var(--passport-gold);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.game-list-add-btn {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.game-list-add-btn:hover { background: rgba(255,255,255,0.12); }
+
+/* Stamp list items — dark game style */
+.game-stamp-list .stamp-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.game-stamp-list .stamp-item:hover { background: rgba(255,255,255,0.04); }
+.game-stamp-list .stamp-seal {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255,255,255,0.2);
+  background: transparent !important;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.25);
+  flex-shrink: 0;
+}
+.game-stamp-list .stamp-item--visited .stamp-seal {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: rgba(255,87,34,0.1);
+}
+.game-stamp-list .stamp-item--gold .stamp-seal {
+  border-color: var(--passport-gold);
+  color: var(--passport-gold);
+  background: rgba(201,168,76,0.12);
+}
+.game-stamp-list .stamp-name { color: white; font-size: 0.85rem; font-weight: 500; }
+.game-stamp-list .stamp-neighborhood { color: rgba(255,255,255,0.4); font-size: 0.72rem; margin-top: 1px; }
+.game-stamp-list .stamp-edit-btn {
+  margin-left: auto;
+  background: none; border: none;
+  color: rgba(255,255,255,0.25);
+  cursor: pointer; font-size: 0.8rem;
+  padding: 4px 6px;
+}
+.game-stamp-list .stamp-edit-btn:hover { color: var(--passport-gold); }
+
+/* Tab bar */
+.game-tab-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  background: rgba(10,15,30,0.97);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  height: 56px;
+}
+.game-tab {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px;
+  background: none; border: none;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+  text-decoration: none;
+  color: white;
+}
+.game-tab--active { opacity: 1; }
+.game-tab-icon { font-size: 1.2rem; line-height: 1; }
+.game-tab-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+}
+.game-tab--active .game-tab-label { color: var(--orange); }

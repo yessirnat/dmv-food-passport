@@ -3,54 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Pizza Passport — DMV Food Passport</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body data-page="passport">
+<body data-page="passport" class="game-body">
 
-  <nav class="nav">
-    <div class="nav__inner">
-      <a href="index.html" class="nav__logo">🗺️ DMV Food Passport</a>
-      <div class="nav__links">
-        <a href="index.html" class="nav__link">← All Passports</a>
-        <a href="profile.html" class="nav__link">My Profile</a>
+  <!-- Full-screen map -->
+  <div id="map" class="game-map"></div>
+
+  <!-- Top HUD -->
+  <div class="game-hud-top">
+    <div class="hud-left">
+      <div class="hud-level" id="level-name">🗺️ Food Tourist</div>
+      <div class="hud-xp-row">
+        <div class="hud-xp-bar"><div class="hud-xp-fill" id="xp-bar-fill" style="width:0%"></div></div>
+        <span class="hud-xp-label" id="xp-value">0 XP</span>
       </div>
     </div>
-  </nav>
-
-  <div class="passport-layout">
-    <div id="map"></div>
-
-    <aside class="sidebar">
-      <div class="sidebar__header">
-        <p class="sidebar__country">DMV · USA · Food Edition</p>
-        <h1 class="sidebar__title" id="passport-title">Pizza Passport 🍕</h1>
-        <p class="sidebar__subtitle">Tap a pin on the map to explore</p>
-      </div>
-
-      <div class="xp-panel">
-        <div class="xp-panel__level" id="level-name">🗺️ Food Tourist</div>
-        <div class="progress-bar">
-          <div class="progress-bar__fill" id="xp-bar-fill" style="width: 0%"></div>
-        </div>
-        <div class="xp-panel__details">
-          <span id="xp-value">0 XP</span>
-          <span id="next-level"></span>
-        </div>
-      </div>
-
-      <div class="stamp-counter" id="stamp-counter">0 / 12 stamps collected</div>
-
-      <div id="stamp-list"></div>
-
-      <div class="sidebar__add-btn-wrap">
-        <button class="sidebar__add-btn" id="open-add-modal">＋ Add a pizza place</button>
-      </div>
-    </aside>
+    <div class="hud-right">
+      <div class="hud-stamp-badge" id="stamp-counter">0/12</div>
+      <span class="hud-next-level" id="next-level"></span>
+    </div>
   </div>
+
+  <!-- View toggle -->
+  <div class="game-view-toggle">
+    <button class="view-toggle-btn view-toggle-btn--active" id="btn-map-view">Map</button>
+    <button class="view-toggle-btn" id="btn-list-view">All spots</button>
+  </div>
+
+  <!-- Bottom sheet -->
+  <div class="game-sheet" id="game-sheet">
+    <div class="sheet-handle-bar"><div class="sheet-handle"></div></div>
+
+    <!-- Peek state: shown when no pin selected -->
+    <div class="sheet-peek" id="sheet-peek">
+      <p class="sheet-nearby-label">Nearest unvisited</p>
+      <div class="sheet-peek-row" id="sheet-peek-row">
+        <div class="sheet-peek-dot"></div>
+        <div>
+          <div class="sheet-peek-name" id="sheet-peek-name">Tap a pin to explore</div>
+          <div class="sheet-peek-sub" id="sheet-peek-sub">or select from All spots</div>
+        </div>
+        <span class="sheet-peek-distance" id="sheet-peek-distance"></span>
+      </div>
+    </div>
+
+    <!-- Expanded state: shown when a pin is selected -->
+    <div class="sheet-detail" id="sheet-detail" style="display:none">
+      <div class="sheet-detail-header">
+        <div class="sheet-detail-emoji" id="sheet-detail-emoji">🍕</div>
+        <div class="sheet-detail-info">
+          <div class="sheet-detail-name" id="sheet-detail-name"></div>
+          <div class="sheet-detail-location" id="sheet-detail-location"></div>
+          <div class="sheet-detail-address" id="sheet-detail-address"></div>
+        </div>
+        <button class="sheet-close-btn" id="sheet-close-btn" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet-detail-tags" id="sheet-detail-tags"></div>
+      <div class="sheet-detail-desc" id="sheet-detail-desc"></div>
+      <div class="sheet-xp-row" id="sheet-xp-row">
+        <span class="sheet-xp-text">Check in to earn</span>
+        <span class="sheet-xp-earn">+25 XP + stamp</span>
+      </div>
+      <a class="sheet-checkin-btn" id="sheet-checkin-btn" href="#">[ CHECK IN HERE ]</a>
+      <div class="sheet-visited-badge" id="sheet-visited-badge" style="display:none">
+        ✅ Stamped! <span id="sheet-visited-date"></span>
+        <a class="sheet-update-link" id="sheet-update-link" href="#">Update visit →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- List view overlay (shown when "All spots" tab is active) -->
+  <div class="game-list-view" id="game-list-view" style="display:none">
+    <div class="game-list-header">
+      <h2 class="game-list-title" id="game-list-title">🍕 Pizza Passport</h2>
+      <button class="game-list-add-btn" id="open-add-modal">＋ Add a place</button>
+    </div>
+    <div id="stamp-list" class="game-stamp-list"></div>
+  </div>
+
+  <!-- Tab bar -->
+  <nav class="game-tab-bar">
+    <a href="index.html" class="game-tab">
+      <span class="game-tab-icon">🗺️</span>
+      <span class="game-tab-label">Passports</span>
+    </a>
+    <button class="game-tab game-tab--active" id="tab-explore">
+      <span class="game-tab-icon">🍕</span>
+      <span class="game-tab-label">Explore</span>
+    </button>
+    <a href="profile.html" class="game-tab">
+      <span class="game-tab-icon">👤</span>
+      <span class="game-tab-label">Profile</span>
+    </a>
+  </nav>
 
   <!-- Stamp animation overlay -->
   <div class="stamp-overlay" id="stamp-overlay">
@@ -72,15 +125,12 @@
         </div>
         <button class="modal__close" id="close-modal" aria-label="Close">✕</button>
       </div>
-
       <form id="custom-restaurant-form">
         <input type="hidden" id="edit-restaurant-id">
-
         <div class="modal__field">
           <label class="modal__label" for="input-name">Restaurant name *</label>
           <input class="modal__input" type="text" id="input-name" placeholder="e.g. Pete's Pizza" required>
         </div>
-
         <div class="modal__field-row">
           <div class="modal__field">
             <label class="modal__label" for="input-neighborhood">Neighborhood *</label>
@@ -91,22 +141,18 @@
             <input class="modal__input" type="text" id="input-city" placeholder="e.g. Alexandria, VA" required>
           </div>
         </div>
-
         <div class="modal__field">
           <label class="modal__label" for="input-address">Address <span class="modal__optional">(optional)</span></label>
           <input class="modal__input" type="text" id="input-address" placeholder="e.g. 123 King St, Alexandria, VA">
         </div>
-
         <div class="modal__field">
           <label class="modal__label" for="input-description">Notes <span class="modal__optional">(optional)</span></label>
           <textarea class="modal__input modal__textarea" id="input-description" placeholder="What made you want to try this place?"></textarea>
         </div>
-
         <div class="modal__field">
           <label class="modal__label" for="input-tags">Tags <span class="modal__optional">(comma separated, optional)</span></label>
           <input class="modal__input" type="text" id="input-tags" placeholder="e.g. wood fired, BYOB, local favorite">
         </div>
-
         <div class="modal__actions">
           <button type="button" class="modal__delete-btn" id="modal-delete-btn" style="display:none">🗑 Remove</button>
           <button type="submit" class="btn btn--primary" id="modal-save-btn">Save Place</button>
